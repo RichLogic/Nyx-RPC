@@ -1,0 +1,52 @@
+# Compile
+build/
+target/
+
+# logs
+logs/
+log/
+
+# Eclipse Project Files
+.classpath
+.project
+.settings/
+
+# IntelliJ IDEA Files
+*.iml
+*.ipr
+*.iws
+*.idea
+.idea/
+out/
+.idea_modules/
+
+# Maven
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+pom.xml.next
+release.properties
+dependency-reduced-pom.xml
+buildNumber.properties
+.mvn/timing.properties
+.mvn/wrapper/maven-wrapper.jar
+
+# Java class files
+*.class
+
+# NetBeans
+nbproject/private/
+nbbuild/
+dist/
+nbdist/
+.nb-gradle/
+
+# VS Code
+.vscode/
+
+# MacOS
+.DS_Store
+*/.DS_Store
+
+### Local Application Config ###
+application-local.yml
