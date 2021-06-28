@@ -1,4 +1,4 @@
-package com.zr.zrrpc.server;
+package com.zr.zrrpc.server.inter;
 
 /**
  * <h3>ZR-RPC</h3>
@@ -6,7 +6,7 @@ package com.zr.zrrpc.server;
  * <p></p>
  *
  * @author : richlogic
- * @since : 2021/06/15
+ * @since : 2021/06/16
  */
-public class Main {
+public interface IAccountService {
 }
