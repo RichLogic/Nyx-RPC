@@ -13,6 +13,10 @@ public class RpcInvoker {
     private Class<?> rpcInterface;
     private String serviceName;
     private String interfaceName;
+    private String method;
+    private Class<?>[] paramClasses;
+    private Object[] params;
+    private Class<?> returnType;
 
     public Class<?> getRpcInterface() {
         return rpcInterface;
@@ -41,6 +45,47 @@ public class RpcInvoker {
             throw new Exception("接口大于一个");
         }
         this.interfaceName = interfaceNames[0];
+        return this;
+    }
+
+    public RpcInvoker setInterfaceName(String interfaceName) {
+        this.interfaceName = interfaceName;
+        return this;
+    }
+
+    public String getMethod() {
+        return method;
+    }
+
+    public RpcInvoker setMethod(String method) {
+        this.method = method;
+        return this;
+    }
+
+    public Class<?>[] getParamClasses() {
+        return paramClasses;
+    }
+
+    public RpcInvoker setParamClasses(Class<?>[] paramClasses) {
+        this.paramClasses = paramClasses;
+        return this;
+    }
+
+    public Object[] getParams() {
+        return params;
+    }
+
+    public RpcInvoker setParams(Object[] params) {
+        this.params = params;
+        return this;
+    }
+
+    public Class<?> getReturnType() {
+        return returnType;
+    }
+
+    public RpcInvoker setReturnType(Class<?> returnType) {
+        this.returnType = returnType;
         return this;
     }
 }

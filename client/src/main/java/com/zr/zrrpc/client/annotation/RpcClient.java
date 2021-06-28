@@ -1,7 +1,5 @@
 package com.zr.zrrpc.client.annotation;
 
-import org.springframework.stereotype.Service;
-
 import java.lang.annotation.*;
 
 /**
@@ -12,11 +10,10 @@ import java.lang.annotation.*;
  * @author : richlogic
  * @since : 2021/06/26
  */
-@Service
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
-public @interface ZrrpcClient {
+public @interface RpcClient {
 
     String value();
 

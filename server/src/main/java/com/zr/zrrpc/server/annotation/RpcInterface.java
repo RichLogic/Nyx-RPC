@@ -1,4 +1,4 @@
-package com.zr.zrrpc.server;
+package com.zr.zrrpc.server.annotation;
 
 import java.lang.annotation.*;
 

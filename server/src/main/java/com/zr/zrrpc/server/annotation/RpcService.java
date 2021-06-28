@@ -1,7 +1,6 @@
 package com.zr.zrrpc.server.annotation;
 
-import com.zr.zrrpc.server.register.RpcServiceRegistrar;
-import org.springframework.context.annotation.Import;
+import org.springframework.stereotype.Service;
 
 import java.lang.annotation.*;
 
@@ -11,12 +10,12 @@ import java.lang.annotation.*;
  * <p></p>
  *
  * @author : richlogic
- * @since : 2021/06/17
+ * @since : 2021/06/28
  */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
-@Import(RpcServiceRegistrar.class)
-public @interface EnableZrrpcServer {
+@Service
+public @interface RpcService {
 
 }

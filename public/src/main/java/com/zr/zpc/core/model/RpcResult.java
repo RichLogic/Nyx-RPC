@@ -8,9 +8,26 @@ package com.zr.zpc.core.model;
  * @author : richlogic
  * @since : 2021/06/28
  */
-public class RpcResult {
+public class RpcResult<T> {
 
     private Object result;
     private String exceptionStackInfo;
 
+    public Object getResult() {
+        return result;
+    }
+
+    public RpcResult<T> setResult(T result) {
+        this.result = result;
+        return this;
+    }
+
+    public String getExceptionStackInfo() {
+        return exceptionStackInfo;
+    }
+
+    public RpcResult<T> setExceptionStackInfo(String exceptionStackInfo) {
+        this.exceptionStackInfo = exceptionStackInfo;
+        return this;
+    }
 }

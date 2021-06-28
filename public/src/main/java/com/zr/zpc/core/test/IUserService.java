@@ -1,4 +1,4 @@
-package com.zr.zrrpc.client.test;
+package com.zr.zpc.core.test;
 
 /**
  * <h3>ZR-RPC</h3>

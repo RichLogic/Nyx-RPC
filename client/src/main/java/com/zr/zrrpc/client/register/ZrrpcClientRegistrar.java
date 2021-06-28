@@ -1,7 +1,7 @@
 package com.zr.zrrpc.client.register;
 
 import com.zr.zpc.core.model.RpcInvoker;
-import com.zr.zrrpc.client.annotation.ZrrpcClient;
+import com.zr.zrrpc.client.annotation.RpcClient;
 import org.springframework.beans.factory.annotation.AnnotatedBeanDefinition;
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.beans.factory.support.BeanDefinitionBuilder;
@@ -55,7 +55,7 @@ public class ZrrpcClientRegistrar implements ImportBeanDefinitionRegistrar, Envi
             }
         };
         scanner.setResourceLoader(this.resourceLoader);
-        scanner.addIncludeFilter(new AnnotationTypeFilter(ZrrpcClient.class));
+        scanner.addIncludeFilter(new AnnotationTypeFilter(RpcClient.class));
 
         String packageName = ClassUtils.getPackageName(metadata.getClassName());
         Set<BeanDefinition> candidateComponents = scanner.findCandidateComponents(packageName);
@@ -65,7 +65,7 @@ public class ZrrpcClientRegistrar implements ImportBeanDefinitionRegistrar, Envi
                 AnnotationMetadata annotationMetadata = ((AnnotatedBeanDefinition) candidateComponent).getMetadata();
                 Assert.isTrue(annotationMetadata.isInterface(), "@ZrrpcClient can only be specified on an interface");
 
-                Map<String, Object> attributes = annotationMetadata.getAnnotationAttributes(ZrrpcClient.class.getCanonicalName());
+                Map<String, Object> attributes = annotationMetadata.getAnnotationAttributes(RpcClient.class.getCanonicalName());
                 assert attributes != null;
 
                 BeanDefinitionBuilder builder = BeanDefinitionBuilder.genericBeanDefinition(ZrrpcFactoryBean.class);
