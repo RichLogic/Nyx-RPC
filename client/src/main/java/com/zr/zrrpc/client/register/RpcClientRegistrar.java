@@ -29,7 +29,7 @@ import java.util.Set;
  * @author : richlogic
  * @since : 2021/06/21
  */
-public class ZrrpcClientRegistrar implements ImportBeanDefinitionRegistrar, EnvironmentAware, ResourceLoaderAware {
+public class RpcClientRegistrar implements ImportBeanDefinitionRegistrar, EnvironmentAware, ResourceLoaderAware {
 
     private ResourceLoader resourceLoader;
 
@@ -68,7 +68,7 @@ public class ZrrpcClientRegistrar implements ImportBeanDefinitionRegistrar, Envi
                 Map<String, Object> attributes = annotationMetadata.getAnnotationAttributes(RpcClient.class.getCanonicalName());
                 assert attributes != null;
 
-                BeanDefinitionBuilder builder = BeanDefinitionBuilder.genericBeanDefinition(ZrrpcFactoryBean.class);
+                BeanDefinitionBuilder builder = BeanDefinitionBuilder.genericBeanDefinition(RpcFactoryBean.class);
                 builder.setScope("singleton");
 
                 RpcInvoker invoker = new RpcInvoker();

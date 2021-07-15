@@ -2,7 +2,7 @@ package com.zr.zrrpc.server;
 
 import com.zr.zpc.core.model.RpcInvoker;
 import com.zr.zpc.core.test.IUserService;
-import com.zr.zrrpc.server.annotation.EnableZrrpcServer;
+import com.zr.zrrpc.server.annotation.EnableRpcServer;
 import com.zr.zrrpc.server.register.InvokeService;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
@@ -19,11 +19,11 @@ import javax.annotation.Resource;
  * @since : 2021/06/15
  */
 @SpringBootApplication
-@EnableZrrpcServer
-public class Boot {
+@EnableRpcServer()
+public class ServerBoot {
 
     public static void main(String[] args) {
-        new SpringApplicationBuilder().sources(Boot.class).run(args);
+        new SpringApplicationBuilder().sources(ServerBoot.class).run(args);
     }
 
     @Resource

@@ -13,7 +13,7 @@ import java.lang.reflect.Proxy;
  * @author : richlogic
  * @since : 2021/06/23
  */
-public class ZrrpcFactoryBean implements FactoryBean<Object> {
+public class RpcFactoryBean implements FactoryBean<Object> {
 
     private RpcInvoker invoker;
 
@@ -28,14 +28,14 @@ public class ZrrpcFactoryBean implements FactoryBean<Object> {
 
     @Override
     public Class<?> getObjectType() {
-        return null;
+        return invoker.getRpcInterface();
     }
 
     public RpcInvoker getInvoker() {
         return invoker;
     }
 
-    public ZrrpcFactoryBean setInvoker(RpcInvoker invoker) {
+    public RpcFactoryBean setInvoker(RpcInvoker invoker) {
         this.invoker = invoker;
         return this;
     }

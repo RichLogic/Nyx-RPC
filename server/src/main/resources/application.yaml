@@ -2,11 +2,9 @@ spring:
   profiles:
     active: dev
 
-  zrrpc:
+  rpc:
     server:
-      - name: demo-server
-        domain:
-          - 127.0.0.1:9999
-        classes:
-          - com.zr.zrrpc.server.inter.IUserService
-          - com.zr.zrrpc.server.inter.IAccountService
+      name: demo-service
+      port: 7777
+    zookeeper:
+

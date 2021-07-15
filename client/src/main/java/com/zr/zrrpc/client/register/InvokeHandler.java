@@ -16,7 +16,7 @@ import java.lang.reflect.Method;
  */
 public class InvokeHandler implements InvocationHandler {
 
-    private RpcInvoker invoker;
+    private final RpcInvoker invoker;
 
     public InvokeHandler(RpcInvoker invoker) {
         this.invoker = invoker;

@@ -1,6 +1,6 @@
-package com.zr.zrrpc.server.annotation;
+package com.zr.zrrpc.client.annotation;
 
-import com.zr.zrrpc.server.register.RpcServiceRegistrar;
+import com.zr.zrrpc.client.register.RpcClientRegistrar;
 import org.springframework.context.annotation.Import;
 
 import java.lang.annotation.*;
@@ -16,7 +16,6 @@ import java.lang.annotation.*;
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
 @Documented
-@Import(RpcServiceRegistrar.class)
-public @interface EnableZrrpcServer {
-
+@Import(RpcClientRegistrar.class)
+public @interface EnableRpcClient {
 }

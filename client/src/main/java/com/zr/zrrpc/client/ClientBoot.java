@@ -1,6 +1,6 @@
 package com.zr.zrrpc.client;
 
-import com.zr.zrrpc.client.annotation.EnableZrrpcClient;
+import com.zr.zrrpc.client.annotation.EnableRpcClient;
 import com.zr.zrrpc.client.test.UserRpcClient;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
@@ -17,14 +17,14 @@ import javax.annotation.Resource;
  * @since : 2021/06/15
  */
 @SpringBootApplication
-@EnableZrrpcClient
-public class Boot {
+@EnableRpcClient
+public class ClientBoot {
 
     @Resource
     private UserRpcClient userRpcClient;
 
     public static void main(String[] args) {
-        new SpringApplicationBuilder().sources(Boot.class).run(args);
+        new SpringApplicationBuilder().sources(ClientBoot.class).run(args);
 
         try {
             Thread.sleep(1000000);
