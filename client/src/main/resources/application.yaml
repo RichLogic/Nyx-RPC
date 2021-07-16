@@ -2,4 +2,5 @@ spring:
   profiles:
     active: dev
 
-
+  rpc:
+      demo-service: 127.0.0.1:7778,127.0.0.1:7779

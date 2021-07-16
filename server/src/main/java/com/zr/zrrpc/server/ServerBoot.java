@@ -4,6 +4,7 @@ import com.zr.zpc.core.model.RpcInvoker;
 import com.zr.zpc.core.test.IUserService;
 import com.zr.zrrpc.server.annotation.EnableRpcServer;
 import com.zr.zrrpc.server.register.InvokeService;
+import com.zr.zrrpc.server.service.ZRRpcServer;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 
@@ -29,14 +30,19 @@ public class ServerBoot {
     @Resource
     private InvokeService service;
 
-    @PostConstruct
-    public void test() {
-        RpcInvoker invoker = new RpcInvoker();
-        invoker.setInterfaceName(IUserService.class.getName());
-        invoker.setMethod("getName");
+    @Resource
+    private ZRRpcServer zrRpcServer;
 
-        Object name = service.invoke(invoker);
-        System.out.println(name);
+    @PostConstruct
+    public void init() {
+        zrRpcServer.start();
+
+//        RpcInvoker invoker = new RpcInvoker();
+//        invoker.setInterfaceName(IUserService.class.getName());
+//        invoker.setMethod("getName");
+//
+//        Object name = service.invoke(invoker);
+//        System.out.println(name);
     }
 
 }
