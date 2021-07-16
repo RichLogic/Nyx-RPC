@@ -90,16 +90,17 @@ public class RpcClientRegistrar implements ImportBeanDefinitionRegistrar, Enviro
             }
 
             // 注册这个 service
-            RpcInvoker invoker = this.registerBeanDefinition(((AnnotatedBeanDefinition) candidateComponent).getMetadata(), registry);
+            String serverName = this.registerBeanDefinition((AnnotatedBeanDefinition) candidateComponent, registry);
 
             // 拉取服务 zk 节点
-            this.pullFromZk(invoker.getServerName());
+            this.pullFromZk(serverName);
         }
 
     }
 
-    private RpcInvoker registerBeanDefinition(AnnotationMetadata annotationMetadata, BeanDefinitionRegistry registry) {
+    private String registerBeanDefinition(AnnotatedBeanDefinition beanDefinition, BeanDefinitionRegistry registry) {
 
+        AnnotationMetadata annotationMetadata = beanDefinition.getMetadata();
         Assert.isTrue(annotationMetadata.isInterface(), "@ZrrpcClient can only be specified on an interface");
 
         Map<String, Object> attributes = annotationMetadata.getAnnotationAttributes(RpcClient.class.getCanonicalName());
@@ -108,20 +109,13 @@ public class RpcClientRegistrar implements ImportBeanDefinitionRegistrar, Enviro
         BeanDefinitionBuilder builder = BeanDefinitionBuilder.genericBeanDefinition(RpcFactoryBean.class);
         builder.setScope("singleton");
 
-        RpcInvoker invoker = new RpcInvoker();
-        try {
-            invoker.setRpcInterface(Class.forName(annotationMetadata.getClassName()))
-                    .setServerName((String) attributes.get("value"))
-                    .setInterfaceName(annotationMetadata.getInterfaceNames())
-            ;
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        builder.addPropertyValue("invoker", invoker);
+        builder.addPropertyValue("proxyClassName", annotationMetadata.getClassName());
+        builder.addPropertyValue("serverName", attributes.get("value"));
+        builder.addPropertyValue("interfaceName", annotationMetadata.getInterfaceNames());
 
         registry.registerBeanDefinition(this.handleClassName(annotationMetadata.getClassName()), builder.getBeanDefinition());
 
-        return invoker;
+        return (String) attributes.get("value");
     }
 
     private String handleClassName(String fullClassName) {

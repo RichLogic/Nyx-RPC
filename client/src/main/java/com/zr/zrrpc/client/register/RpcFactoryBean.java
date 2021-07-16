@@ -1,6 +1,5 @@
 package com.zr.zrrpc.client.register;
 
-import com.zr.zpc.core.model.RpcInvoker;
 import org.springframework.beans.factory.FactoryBean;
 
 import java.lang.reflect.Proxy;
@@ -15,28 +14,53 @@ import java.lang.reflect.Proxy;
  */
 public class RpcFactoryBean implements FactoryBean<Object> {
 
-    private RpcInvoker invoker;
+    private String proxyClassName;
+    private String serverName;
+    private String interfaceName;
 
     @Override
-    public Object getObject() {
+    public Object getObject() throws ClassNotFoundException {
         return Proxy.newProxyInstance(
                 Thread.currentThread().getContextClassLoader(),
-                new Class[]{invoker.getRpcInterface()},
-                new InvokeHandler(invoker)
+                new Class[]{Class.forName(proxyClassName)},
+                new InvokeHandler(serverName, interfaceName)
         );
     }
 
     @Override
     public Class<?> getObjectType() {
-        return invoker.getRpcInterface();
+        try {
+            return Class.forName(proxyClassName);
+        } catch (ClassNotFoundException e) {
+            e.printStackTrace();
+        }
+        return null;
     }
 
-    public RpcInvoker getInvoker() {
-        return invoker;
+    public String getProxyClassName() {
+        return proxyClassName;
     }
 
-    public RpcFactoryBean setInvoker(RpcInvoker invoker) {
-        this.invoker = invoker;
+    public RpcFactoryBean setProxyClassName(String proxyClassName) {
+        this.proxyClassName = proxyClassName;
+        return this;
+    }
+
+    public String getServerName() {
+        return serverName;
+    }
+
+    public RpcFactoryBean setServerName(String serverName) {
+        this.serverName = serverName;
+        return this;
+    }
+
+    public String getInterfaceName() {
+        return interfaceName;
+    }
+
+    public RpcFactoryBean setInterfaceName(String interfaceName) {
+        this.interfaceName = interfaceName;
         return this;
     }
 }

@@ -42,9 +42,9 @@ public class RpcInvoker implements Serializable {
         return interfaceName;
     }
 
-    public RpcInvoker setInterfaceName(String[] interfaceNames) throws Exception {
+    public RpcInvoker setInterfaceName(String[] interfaceNames) {
         if (interfaceNames.length > 1) {
-            throw new Exception("接口大于一个");
+            throw new RuntimeException("接口大于一个");
         }
         this.interfaceName = interfaceNames[0];
         return this;
