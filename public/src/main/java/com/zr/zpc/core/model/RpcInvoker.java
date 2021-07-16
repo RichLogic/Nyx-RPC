@@ -1,5 +1,7 @@
 package com.zr.zpc.core.model;
 
+import java.io.Serializable;
+
 /**
  * <h3>ZR-RPC</h3>
  * <h4>com.zr.zrrpc.client.register</h4>
@@ -8,10 +10,10 @@ package com.zr.zpc.core.model;
  * @author : richlogic
  * @since : 2021/06/27
  */
-public class RpcInvoker {
+public class RpcInvoker implements Serializable {
 
     private Class<?> rpcInterface;
-    private String serviceName;
+    private String serverName;
     private String interfaceName;
     private String method;
     private Class<?>[] paramClasses;
@@ -27,12 +29,12 @@ public class RpcInvoker {
         return this;
     }
 
-    public String getServiceName() {
-        return serviceName;
+    public String getServerName() {
+        return serverName;
     }
 
-    public RpcInvoker setServiceName(String serviceName) {
-        this.serviceName = serviceName;
+    public RpcInvoker setServerName(String serverName) {
+        this.serverName = serverName;
         return this;
     }
 
@@ -40,9 +42,9 @@ public class RpcInvoker {
         return interfaceName;
     }
 
-    public RpcInvoker setInterfaceName(String[] interfaceNames) throws Exception {
+    public RpcInvoker setInterfaceName(String[] interfaceNames) {
         if (interfaceNames.length > 1) {
-            throw new Exception("接口大于一个");
+            throw new RuntimeException("接口大于一个");
         }
         this.interfaceName = interfaceNames[0];
         return this;

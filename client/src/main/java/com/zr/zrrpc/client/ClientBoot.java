@@ -35,7 +35,7 @@ public class ClientBoot {
 
     @PostConstruct
     public void test() {
-        String name = userRpcClient.getName();
+        String name = userRpcClient.getHa("ha", 10, 10);
         System.out.println(name);
     }
 

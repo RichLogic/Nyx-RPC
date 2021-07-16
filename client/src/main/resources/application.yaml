@@ -1,6 +1,7 @@
 spring:
   profiles:
     active: dev
-
   rpc:
-      demo-service: 127.0.0.1:7778,127.0.0.1:7779
+    zookeeper:
+      connect-string: 10.242.27.160:2181
+

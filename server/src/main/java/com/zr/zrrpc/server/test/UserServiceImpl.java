@@ -19,4 +19,8 @@ public class UserServiceImpl implements IUserService {
         return "Hello RCP!";
     }
 
+    @Override
+    public String getHa(String name, Integer skip, Integer limit) {
+        return null;
+    }
 }

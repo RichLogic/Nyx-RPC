@@ -3,8 +3,9 @@ package com.zr.zrrpc.client.register;
 import com.zr.zpc.core.model.RpcInvoker;
 
 import java.lang.reflect.InvocationHandler;
-import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
+import java.util.Arrays;
+import java.util.function.IntFunction;
 
 /**
  * <h3>ZR-RPC</h3>
@@ -16,21 +17,25 @@ import java.lang.reflect.Method;
  */
 public class InvokeHandler implements InvocationHandler {
 
-    private final RpcInvoker invoker;
+    private final String serverName;
+    private final String interfaceName;
 
-    public InvokeHandler(RpcInvoker invoker) {
-        this.invoker = invoker;
+    public InvokeHandler(String serverName, String interfaceName) {
+        this.serverName = serverName;
+        this.interfaceName = interfaceName;
     }
 
     @Override
-    public Object invoke(Object proxy, Method method, Object[] args) throws InvocationTargetException, IllegalAccessException {
-        // object的公用方法直接调用当前invoke对象的。
-        if (Object.class.equals(method.getDeclaringClass())) {
-            return method.invoke(this, args);
-            // 针对接口的不同方法书写我们具体的实现
-        }
-        return invoker.getServiceName() + ":" + invoker.getInterfaceName() + ":" + method.getName();
+    public Object invoke(Object proxy, Method method, Object[] args) {
 
+        RpcInvoker invoker = new RpcInvoker()
+                .setServerName(serverName)
+                .setInterfaceName(interfaceName)
+                .setMethod(method.getName())
+                .setParamClasses(Arrays.stream(args).map(Object::getClass).toArray((IntFunction<Class<?>[]>) Class[]::new))
+                .setParams(args)
+                .setReturnType(method.getReturnType());
+        return invoker;
     }
 
 }

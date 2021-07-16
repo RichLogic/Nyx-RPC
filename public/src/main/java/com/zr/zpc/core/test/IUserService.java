@@ -12,4 +12,6 @@ public interface IUserService {
 
     String getName();
 
+    String getHa(String name, Integer skip, Integer limit);
+
 }
