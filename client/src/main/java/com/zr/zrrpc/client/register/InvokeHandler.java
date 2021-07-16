@@ -29,7 +29,7 @@ public class InvokeHandler implements InvocationHandler {
             return method.invoke(this, args);
             // 针对接口的不同方法书写我们具体的实现
         }
-        return invoker.getServiceName() + ":" + invoker.getInterfaceName() + ":" + method.getName();
+        return invoker.getServerName() + ":" + invoker.getInterfaceName() + ":" + method.getName();
     }
 
 }

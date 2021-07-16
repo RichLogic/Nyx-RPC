@@ -19,11 +19,16 @@ import javax.annotation.Resource;
  * @since : 2021/06/15
  */
 @SpringBootApplication
-@EnableRpcServer()
+@EnableRpcServer
 public class ServerBoot {
 
     public static void main(String[] args) {
         new SpringApplicationBuilder().sources(ServerBoot.class).run(args);
+        try {
+            Thread.sleep(10000000);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 
     @Resource
