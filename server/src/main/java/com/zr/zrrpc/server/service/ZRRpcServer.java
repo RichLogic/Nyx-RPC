@@ -1,17 +1,26 @@
 package com.zr.zrrpc.server.service;
 
 
-import com.zr.zrrpc.server.handler.HttpHandler;
+import com.zr.zpc.core.codec.NettyDecoder;
+import com.zr.zpc.core.codec.NettyEncoder;
+import com.zr.zpc.core.model.RpcConnectParams;
+import com.zr.zpc.core.model.RpcInvoker;
+import com.zr.zpc.core.model.RpcResult;
+import com.zr.zrrpc.server.handler.NettyServerHandler;
+import com.zr.zrrpc.server.register.InvokeService;
 import io.netty.bootstrap.ServerBootstrap;
+import io.netty.channel.ChannelFuture;
 import io.netty.channel.ChannelInitializer;
 import io.netty.channel.ChannelOption;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
-import io.netty.handler.codec.http.HttpRequestDecoder;
-import io.netty.handler.codec.http.HttpRequestEncoder;
 import io.netty.util.concurrent.DefaultThreadFactory;
+import org.slf4j.Logger;
+import org.slf4j.LoggerFactory;
 import org.springframework.stereotype.Service;
+
+import javax.annotation.Resource;
 
 /**
  * <h3>zrrpc.client</h3>
@@ -23,11 +32,12 @@ import org.springframework.stereotype.Service;
  */
 @Service
 public class ZRRpcServer {
+    protected static final Logger logger = LoggerFactory.getLogger(ZRRpcServer.class);
 
     private int port = 10500;
     private int workThreadNum = 10;
 
-    public void start() {
+    public void start(final RpcConnectParams rpcConnectParams) {
         ServerBootstrap bootstrap = new ServerBootstrap();
 
         NioEventLoopGroup bossGroup = new NioEventLoopGroup(1, new DefaultThreadFactory("zrRpc_boss_" + port, true));
@@ -38,18 +48,41 @@ public class ZRRpcServer {
                     @Override
                     protected void initChannel(SocketChannel ch) throws Exception {
                         ch.pipeline()
-                                .addLast("decoder", new HttpRequestDecoder())
-                                .addLast("encoder", new HttpRequestEncoder())
-                                .addLast("handler", new HttpHandler());
+                                .addLast(new NettyEncoder(RpcInvoker.class))
+                                .addLast(new NettyDecoder(RpcResult.class))
+                                .addLast("handler", new NettyServerHandler(rpcConnectParams));
                     }
                 }).option(ChannelOption.SO_BACKLOG, 128)
                 .childOption(ChannelOption.SO_KEEPALIVE, Boolean.TRUE);
 
         try {
-            bootstrap.bind(port).sync();
+            ChannelFuture future = bootstrap.bind(port).sync();
+
         } catch (InterruptedException e) {
             e.printStackTrace();
+        } finally {
+            try {
+                workerGroup.shutdownGracefully();
+                bossGroup.shutdownGracefully();
+            } catch (Exception e) {
+                logger.error(e.getMessage(), e);
+            }
+
         }
 
     }
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+

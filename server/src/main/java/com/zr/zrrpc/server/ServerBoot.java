@@ -40,8 +40,6 @@ public class ServerBoot {
 
     @PostConstruct
     public void init() {
-        zrRpcServer.start();
-
 //        RpcInvoker invoker = new RpcInvoker();
 //        invoker.setInterfaceName(IUserService.class.getName());
 //        invoker.setMethod("getName");

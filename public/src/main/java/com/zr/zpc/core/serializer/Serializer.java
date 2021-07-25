@@ -1,8 +1,8 @@
-package com.zr.zrrpc.client.serializer;
+package com.zr.zpc.core.serializer;
 
 /**
  * <h3>zrrpc.client</h3>
- * <h4>com.zr.zrrpc.client.serializer</h4>
+ * <h4>com.zr.zpc.core.serializer</h4>
  * <p></p>
  *
  * @author : zhouning
