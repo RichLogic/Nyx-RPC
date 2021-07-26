@@ -4,7 +4,6 @@ import com.google.common.base.Strings;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.zr.zpc.core.model.Constance;
-import com.zr.zpc.core.model.RpcInvoker;
 import com.zr.zpc.core.model.ZkNode;
 import com.zr.zrrpc.client.annotation.RpcClient;
 import org.apache.zookeeper.*;
