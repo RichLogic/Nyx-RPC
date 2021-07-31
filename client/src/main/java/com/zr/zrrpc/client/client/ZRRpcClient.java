@@ -11,8 +11,12 @@ import io.netty.channel.*;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioSocketChannel;
+import org.springframework.util.ObjectUtils;
 
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Objects;
+import java.util.Random;
 import java.util.concurrent.ConcurrentMap;
 import java.util.concurrent.TimeUnit;
 
@@ -26,10 +30,10 @@ import java.util.concurrent.TimeUnit;
  */
 public class ZRRpcClient {
 
-    private static ConcurrentMap<String, Channel> serviceNameChannel;
-    private static Bootstrap client = new Bootstrap();
-    private static EventLoopGroup group = new NioEventLoopGroup();
-    private Channel channel;
+    private static ConcurrentMap<String, List<Channel>> serviceNameChannel;
+    private static final Bootstrap client = new Bootstrap();
+    private static final EventLoopGroup group = new NioEventLoopGroup();
+    private final Random random = new Random();
 
     public void init() {
         client.group(group)
@@ -58,17 +62,29 @@ public class ZRRpcClient {
                 if (!future.isSuccess()) {
                     future.channel().eventLoop().schedule(() -> connect(connectParams), 5, TimeUnit.SECONDS);
                 } else {
-                    serviceNameChannel.put(connectParams.getServiceName(), future.channel());
+                    List<Channel> channelList = serviceNameChannel.get(connectParams.getServiceName());
+                    if (ObjectUtils.isEmpty(channelList)){
+                        serviceNameChannel.put(connectParams.getServiceName(), new ArrayList<Channel>(){{add(future.channel());}});
+                    }else {
+                        channelList.add(future.channel());
+                        serviceNameChannel.put(connectParams.getServiceName(), channelList);
+                    }
                 }
             }
         });
     }
 
     public void send(RpcInvoker invoker) throws Exception {
-        Channel channel = serviceNameChannel.get(invoker.getServerName());
-        if (Objects.nonNull(channel)){
-            channel.writeAndFlush(invoker).sync();
+        Channel channel = getServerChannel(invoker.getServerName());
+        channel.writeAndFlush(invoker).sync();
+    }
+
+    public Channel getServerChannel(String serverName) {
+        List<Channel> channelList = serviceNameChannel.get(serverName);
+        if (ObjectUtils.isEmpty(channelList)) {
+            throw new RuntimeException(serverName + " 无可用执行实例");
         }
-        throw new RuntimeException(invoker.getServerName() + "not registrar");
+
+        return channelList.get(this.random.nextInt(channelList.size()));
     }
 }

@@ -6,6 +6,10 @@ import com.zr.zpc.core.codec.NettyEncoder;
 import com.zr.zpc.core.model.RpcConnectParams;
 import com.zr.zpc.core.model.RpcInvoker;
 import com.zr.zpc.core.model.RpcResult;
+import com.zr.zrrpc.server.codec.FrameDecoder;
+import com.zr.zrrpc.server.codec.FrameEncoder;
+import com.zr.zrrpc.server.codec.ProtocolDecoder;
+import com.zr.zrrpc.server.codec.ProtocolEncoder;
 import com.zr.zrrpc.server.handler.NettyServerHandler;
 import com.zr.zrrpc.server.register.InvokeService;
 import io.netty.bootstrap.ServerBootstrap;
@@ -48,8 +52,10 @@ public class ZRRpcServer {
                     @Override
                     protected void initChannel(SocketChannel ch) throws Exception {
                         ch.pipeline()
-                                .addLast(new NettyEncoder(RpcInvoker.class))
-                                .addLast(new NettyDecoder(RpcResult.class))
+                                .addLast("frameDecoder", new FrameDecoder())
+                                .addLast("frameEncoder", new FrameEncoder())
+                                .addLast("protocolDecoder", new ProtocolDecoder())
+                                .addLast("protocolEncoder", new ProtocolEncoder())
                                 .addLast("handler", new NettyServerHandler(rpcConnectParams));
                     }
                 }).option(ChannelOption.SO_BACKLOG, 128)

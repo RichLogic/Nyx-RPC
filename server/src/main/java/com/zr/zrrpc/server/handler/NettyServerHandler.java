@@ -2,10 +2,13 @@ package com.zr.zrrpc.server.handler;
 
 import com.zr.zpc.core.model.RpcConnectParams;
 import com.zr.zpc.core.model.RpcInvoker;
+import com.zr.zpc.core.model.RpcResult;
 import com.zr.zrrpc.server.register.InvokeService;
+import com.zr.zrrpc.server.register.RpcServiceRegistrar;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.channel.SimpleChannelInboundHandler;
 import io.netty.handler.codec.http.FullHttpRequest;
+import io.netty.util.internal.ThrowableUtil;
 
 import javax.annotation.Resource;
 
@@ -29,8 +32,16 @@ public class NettyServerHandler extends SimpleChannelInboundHandler<RpcInvoker> 
     }
 
     @Override
-    protected void channelRead0(ChannelHandlerContext channelHandlerContext, RpcInvoker request) throws Exception {
-        System.out.println("class:" + request.getClass().getName());
-        invokeService.invoke(request);
+    protected void channelRead0(ChannelHandlerContext channelHandlerContext, RpcInvoker invoker) throws Exception {
+        System.out.println("class:" + invoker.getClass().getName());
+        try {
+            RpcResult result = invokeService.invoke(invoker);
+            channelHandlerContext.writeAndFlush(result);
+        } catch (Exception e) {
+            RpcResult<String> rpcResult = new RpcResult<>();
+            rpcResult.setResult("exception");
+            rpcResult.setExceptionStackInfo(e.getMessage());
+            channelHandlerContext.writeAndFlush(rpcResult);
+        }
     }
 }

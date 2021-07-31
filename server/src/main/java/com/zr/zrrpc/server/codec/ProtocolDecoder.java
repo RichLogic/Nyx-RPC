@@ -1,7 +1,6 @@
-package com.zr.zrrpc.client.codec;
+package com.zr.zrrpc.server.codec;
 
 import com.zr.zpc.core.model.RpcInvoker;
-import com.zr.zpc.core.model.RpcResult;
 import com.zr.zpc.core.util.HessianUtil;
 import io.netty.buffer.ByteBuf;
 import io.netty.channel.ChannelHandlerContext;
@@ -21,8 +20,8 @@ public class ProtocolDecoder extends MessageToMessageDecoder<ByteBuf> {
 
     @Override
     protected void decode(ChannelHandlerContext ctx, ByteBuf byteBuf, List<Object> out) {
-        RpcResult rpcResult = HessianUtil.deserialize(byteBuf.array());
-        out.add(rpcResult);
+        RpcInvoker invoker = HessianUtil.deserialize(byteBuf.array());
+        out.add(invoker);
     }
 
 }
